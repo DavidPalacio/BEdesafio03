@@ -1,0 +1,8 @@
+[
+    {"id":1,"detail":"Frijol","qty":9},
+    {"id":2,"detail":"pasta","qty":3},
+    {"id":3,"detail":"Arroz","qty":15},
+    {"id":4,"detail":"Lenteja","qty":6},
+    {"id":5,"detail":"Aceite","qty":24},
+    {"id":6,"detail":"Zanahoria","qty":33}
+]

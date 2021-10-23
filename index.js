@@ -13,29 +13,40 @@ Antes de iniciar el servidor, colocar en el archivo 'productos.txt' tres product
 
 const Http = require('http');
 const express = require('express');
+const fs = require('fs'); 
 
-const Port = 3000;
+const container = require('./container');
+
+const Port = 8080;
 let app = express();
-let counterPage = 0;
 
-//Tiempo Actual
-let moment = require('moment');
-let currentTime = moment().format('LLL');
 
 app.get('/',(req, res) => {
-    let response = `<h1 style="color:blue">Bienvenidos al Servidor Express de David Palacio</h1>`;
+    let response = `<h1>DESAFIO 3 - Servidor Express de David Palacio</h1>`;
     res.status(200).send(response);
 })
 
-app.get('/visitas',(req, res) => {
-    counterPage++;
-    let response = `<h2>La cantidad de Visitas: ${counterPage}</h>`;
+app.get('/productos',(req, res) => {
+    let productos = fs.readFileSync(`file01.txt`, 'utf-8');
+    let response = `<h2>Estos son todos los productos: </h2><p>${productos}</p>`;
+
     res.status(200).send(response);
 })
 
-app.get('/fyh',(req, res) => {
-    
-    let response = `<h1>Bienvenidos al Servidor Express de David Palacio</h1> <p>Fecha y hora: ${currentTime}<p>`;
+app.get('/productoRandom',(req, res) => {
+    let response;
+    let productos = JSON.parse(fs.readFileSync(`file01.txt`, 'utf-8'));
+        // console.log(productos);
+    let id = Math.ceil(Math.random() * (productos.length));
+        // console.log(id);
+    productos.forEach(element => {
+        if (element.id === id) {
+            console.log('Un Producto Aleatorio:' , JSON.stringify(element));
+            element = JSON.stringify(element);
+            response = `<h2>Un producto aleatorio: </h2><p>${element}</p>`;
+        }
+    });
+    // let response = `<h2>Un producto aleatorio: </h2>${element}<p>`;
     res.status(200).send(response);
 })
 
@@ -43,10 +54,5 @@ app.get('/fyh',(req, res) => {
 app.listen(Port, ()=> {
     console.log(`Servidor Http escuchando en el puerto ${Port}`)
 })
-
-// (async function() {
-//     const url = await ngrok.connect(Port);
-//     console.log("Mi URL", url, "--> portServer:", Port);
-// })();
 
 app.on('error',err => console.log("fallo la conexion al servidor", err));
